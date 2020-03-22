@@ -1,7 +1,7 @@
 # Parcial 1: Sistemas Distribuido
 
 -  Camilo Penagos A00301416
--  Cristian Duque
+-  Cristian Duque A00301448
 
 ## Arquitectura
 
@@ -99,7 +99,45 @@ Cuando se accede por la interfaz web de administración del broker, se evidencia
 
 
 ### Grupo-02
+Para el segundo escenario se debe repetir el procedimiento, pero esta vez se busca verificar que el productor envia correctamente mensajes al consumidor dos (2). Este consumidor tiene como topic de interes el Grupo-02 y recupera los mensajes de la cola de mensajes Grupo-02 del servidor broker.
+
+<img src ="img/enviar2.JPG"  >
+
+Se evidencia como el productor envia correctamente un mensaje dirigido al consumidor dos.
+
+<img src ="img/recibir2.JPG"  >
+
+Se evidencia que el mensaje fue recibido por el consumidor dos,ya que tiene como topic de interes el Grupo-01 y se encuentra suscrito a este topic en el broker.
+
+<img src ="img/cola2.JPG" >
+
+Cuando se accede por la interfaz web de administración del broker, se evidencia que la cola de mensajes correspondiente al Grupo-02,  ha sido creada correctamente en el broker y es aqui donde se almacenan los mensajes enviados a los consumidores de este topic. En este caso el mensaje que ha sido enviado al consumidor dos(2).
+
 
 ### General
+En el ultimo escenario se evidencia que los dos consumidores que han sido creado, aunque estan suscritos a topics de interes distintos estos reciben los mensajes que sean enviados al grupos general como se solicita en el enunciado del parcial. Para validar el correcto funcionamiento se debe enviar un mensaje de parte del productor con destino "general" y verificar que efectivamente los dos consumidores han recibido el mensaje.
+
+<img src ="img/enviartodos.JPG"  >
+
+Se evidencia que el mensaje emitido por el productor tiene como destino el grupo "general".
+
+<img src ="img/recibirtodos1.JPG"  >
+
+En la imagen se evidencia que la maquina virtual correspondiente al consumidor uno(1) ha recibido correctamente el mensaje que ha enviado el productor.
+
+<img src ="img/recibirtodos2.JPG"  >
+
+De igual forma se evidencia que el segundo consumidor aunque pertenece a un topic diferente, ha recibido correctamente el mensaje enviado al grupo general por parte del emisor.
+
+<img src ="img/colatodos.JPG"  >
+
+De igual forma se evidencia que han sido creadas dos colas correspondientes a los grupos de los consumidores, es decir la cola de mensajes para el grupo 01 y grupo 02. Es decir no se ha creado una cola de mensajes para el grupo general, si no que los mensajes de este grupo se almacenan en ambas colas de manera que los consumidores puedan acceder a esos mensajes.
+
+
 
 ## Problemas
+
+
+## Referencias
+
+-  RabbitMQ Topics : https://www.rabbitmq.com/tutorials/tutorial-five-python.html
