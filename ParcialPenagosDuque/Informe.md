@@ -1,4 +1,4 @@
-# Parcial 1: Sistemas Distribuido
+# Parcial 1: Sistemas Distribuidos
 
 -  Camilo Penagos A00301416
 -  Cristian Duque A00301448
