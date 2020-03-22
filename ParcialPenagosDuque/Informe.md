@@ -68,7 +68,9 @@ El productor consiste en un script de python, que se encarga de enviar mensajes 
 
 <img src ="img/enviar1.JPG" height="90" >
 
-El script de python que permite aprovisionar la maquina virtual como un productor se mensajes se encuentra aqui.
+El script de python que permite aprovisionar la maquina virtual como un productor se mensajes se encuentra [aqui](https://github.com/CamiloPenagos99/Rabbitmqtest/blob/master/ParcialPenagosDuque/ArchivosParcial/emit_log_topic.py).
+
+
 
 ### Consumidores
 
