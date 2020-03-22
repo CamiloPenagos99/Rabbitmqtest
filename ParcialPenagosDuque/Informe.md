@@ -13,3 +13,13 @@
 -  Ambos consumidores recibirán los mensajes enviados al grupo "General"
 
 <img src ="img/arqui.JPG" height="300" >
+
+## Procedimiento
+
+### Productor
+### Broker
+### Consumidores
+
+## Funcionamiento - Validación
+
+## Problemas
