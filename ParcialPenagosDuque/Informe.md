@@ -63,7 +63,7 @@ Por ultimo se verifica que el servicio ha sido instalado en localhost y puede se
 
 -  En el servidor broker se evidencia que cada uno de los agentes involucrados en la solución se encuentra registrado en el servidor con su respectiva credencial
 
-<img src ="img/user.JPG" >
+<img src ="img/users.JPG" >
 
 
 ### Productor
