@@ -72,13 +72,17 @@ El productor consiste en un script de python, que se encarga de enviar mensajes 
 
 <img src ="img/enviar1.JPG" height="90" >
 
-El script de python que permite aprovisionar la maquina virtual como un productor se mensajes se encuentra [aqui](ArchivosParcial/emit_log_topic.py).
+-  El script de python que permite aprovisionar la maquina virtual como un **productor** se mensajes se encuentra [aqui](ArchivosParcial/emit_log_topic.py).
 
 
 
 ### Consumidores
 
 Se cuenta con dos consumidores los cuales tienen un solo tema(topic) de interes y ademas reciben los mensajes enviados al grupo genereal.El consumidor cuenta con un script en python que recibe solos los mensajes que van dirigidos a su grupo o topic, y tambien recibe los mensajes que son enviado para el topic General. El consumidor tiene un tema de interes y recibe los mensajes que el emisor envia de ese tema(topic) especifico y se guardan en un cola de mensajes del broker.
+
+-  El script de python que permite aprovisionar la maquina virtual como un **consumidor del Grupo-01**  se encuentra [aqui](ArchivosParcial/receive_log_consumer1.py).
+
+-  El script de python que permite aprovisionar la maquina virtual como un **consumidor del Grupo-02** se encuentra [aqui](ArchivosParcial/receive_log_consumer2.py).
 
 ## Funcionamiento - Validación
 
