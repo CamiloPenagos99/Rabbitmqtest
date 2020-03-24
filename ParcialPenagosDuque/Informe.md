@@ -8,40 +8,40 @@
 -  Un productor de mensajes
 -  Un broker de RabbitMQ
 -  Dos consumidores de mensajes
--  El primer consumidor recibirá los mensajes de la cola "Grupo1"
--  El segundo consumidor recibirá los mensajes de la cola "Grupo2"
+-  El primer consumidor recibirá los mensajes de la cola "Grupo-01"
+-  El segundo consumidor recibirá los mensajes de la cola "Grupo-02"
 -  Ambos consumidores recibirán los mensajes enviados al grupo "General"
 
 <img src ="img/arqui.JPG" height="300" >
 
 ## Procedimiento
 
-Para cumplir con el objetivo del ejercicio parcial, es necesario montar un sistema de arquitectura distribuida que consiste en:
+Para cumplir con el objetivo del ejercicio, es necesario montar un sistema de arquitectura distribuida compuesto por:
 
-**Un Servidor Broker:** Corresponde a la maquina fisica host ubuntu con la dirección IP 192.168.0.14
+**Un Servidor broker:** Corresponde a una máquina física Ubuntu con la dirección IP 192.168.0.14
 
-**Un Productor de mensajes:** Corresponde a una maquina virtual guest Lubuntu con la dirección IP 192.168.0.20
+**Un Productor:** Corresponde a una máquina virtual Lubuntu con la dirección IP 192.168.0.20
 
-**Un Consumidor 01:** Corresponde a una maquina virtual guest Lubuntu con la dirección IP 192.168.0.24
+**Un Consumidor 01:** Corresponde a una máquina virtual Lubuntu con la dirección IP 192.168.0.24
 
-**Un Consumidor 02:** Corresponde a una maquina virtual guest Lubuntu con la dirección IP 192.168.0.26  
+**Un Consumidor 02:** Corresponde a una máquina virtual Lubuntu con la dirección IP 192.168.0.26  
 
 
 
 ### Broker
 
-Actúa como el servidor rabbitmq, encargado de gestionar las transacciones de mensajería entre el productor y el(los) consumidor(es). Además, permite almacenar y gestionar los mensajes en las colas correspondientes, de manera que los clientes que se suscriben a esas colas, pueden acceder y consumir esos mensajes.
+Actúa como servidor rabbitmq, encargado de gestionar las transacciones de mensajería entre el productor y el(los) consumidor(es). Además, permite almacenar y gestionar los mensajes en las colas correspondientes; de manera que los clientes que se suscriben a esas colas, puedan acceder y consumir esos mensajes.
 
-Para su instalación, ingresamos como usuario root con el comando sudo su. Luego, continuamos con los siguientes comandos:
+Para su instalación, ingresamos como usuario root con el comando "sudo su". Luego, continuamos con los siguientes comandos:
 
 `apt-get update`
-Instalación de actualizaciones en el sistema
+Instalar actualizaciones en el sistema
 
 `apt-get install erlang`
-Erlang es una dependencia para rabbitmq y crea un entorno de ejecucción.
+Instalar Erlang dado que es una dependencia para rabbitmq y provee un entorno de ejecución.
 
 `apt-get install rabbitmq-server`
-Intalar el servidor de rabbitmq
+Intalar el servidor rabbitmq
 
 `systemctl enable rabbitmq-server`
 Habilitar el servicio de rabbitmq
@@ -50,18 +50,19 @@ Habilitar el servicio de rabbitmq
 Iniciar el servicio de rabbitmq
 
 `systemctl status rabbitmq-server`
-Con este comando se verifica que efectivamente el servicio de rabbitmq se encuentra habilitado y corriendo, como se observa en la imagen.
+Con este comando se verifica que efectivamente el servicio de rabbitmq se encuentra habilitado y corriendo, como se observa en la imagen:
 
 <img src ="img/brokerruning.JPG" height="155" >
 
-Por ultimo se verifica que el servicio ha sido instalado en localhost y puede ser accesible por la interfaz web de administración usando el puerto http 15672:
+Por último, para poder acceder a la interfaz web de administración del servidor, debemos ingresar el siguiente comando "rabbitmq-plugins enable rabbitmq_management". Ahora, ingresamos a localhost por el puerto 15672 mediante nuestro navegador:
 
 <img src ="img/broker.JPG" height="140" >
 
--  En el servidor broker se evidencia que cada uno de los agentes involucrados en la solución se encuentra registrado en el servidor con su respectiva credencial:
+-  En el servidor broker se evidencia que, cada uno de los agentes involucrados en la solución están registrados en el servidor con su respectiva credencial:
 
 <img src ="img/users.JPG" >
 
+Nota: Se usará python para el desarrollo de este ejercicio tanto en el productor como los consumidores. Para ello, vamos a instalar Pika que implementa el protocolo de mensajería AMQP usado en rabbitmq. Para su instalación, ingresamos el siguiente comando: sudo apt-get install python-pika.
 
 ### Productor
 
@@ -94,51 +95,73 @@ El productor envía correctamente un mensaje de saludo, al consumidor 1.
 El mensaje fue recibido por el consumidor 1, que tiene como topic de interés: Grupo-01
 
 <img src ="img/cola1.JPG" >
-Aceder por la interfaz web de administración del broker, se evidencia que la cola de mensajes correspondiente al Grupo-01, efectivamente ha sido creada y es aquí donde se almacenan los mensajes enviados a los consumidores de este topic. En este caso,   emensaje que ha sido enviado al consumidor 1.
+Acceder por la interfaz web de administración del broker, se evidencia que la cola de mensajes correspondiente al Grupo-01, efectivamente ha sido creada y es aquí donde se almacenan los mensajes enviados a los consumidores de este topic. En este caso, el mensaje que ha sido enviado al consumidor 1.
 
 
 
 
 ### Grupo-02
-Para el segundo escenario se debe repetir el procedimiento, pero esta vez se busca verificar que el productor envia correctamente mensajes al consumidor dos (2). Este consumidor tiene como topic de interes el Grupo-02 y recupera los mensajes de la cola de mensajes Grupo-02 del servidor broker.
+Para el segundo escenario, se debe repetir el procedimiento, pero esta vez se busca verificar que el productor envíe correctamente mensajes al consumidor dos (2), que tiene como topic de interés el "Grupo-02" y recupera los mensajes de la cola de mensajes Grupo-02 del servidor broker.
 
 <img src ="img/enviar2.JPG"  >
 
-Se evidencia como el productor envia correctamente un mensaje dirigido al consumidor dos.
+Se evidencia como el productor envia correctamente un mensaje dirigido al consumidor 2.
 
 <img src ="img/recibir2.JPG"  >
 
-Se evidencia que el mensaje fue recibido por el consumidor dos,ya que tiene como topic de interes el Grupo-01 y se encuentra suscrito a este topic en el broker.
+Se evidencia que el mensaje fue recibido por el consumidor 2, ya que tiene como topic de interés el Grupo-02.
 
 <img src ="img/cola2.JPG" >
 
-Cuando se accede por la interfaz web de administración del broker, se evidencia que la cola de mensajes correspondiente al Grupo-02,  ha sido creada correctamente en el broker y es aqui donde se almacenan los mensajes enviados a los consumidores de este topic. En este caso el mensaje que ha sido enviado al consumidor dos(2).
+Cuando se accede por la interfaz web de administración del broker, se evidencia que la cola de mensajes correspondiente al Grupo-02 ha sido creada correctamente en donde se almacenan los mensajes enviados a los consumidores de este topic. En este caso, el mensaje que ha sido enviado al consumidor dos(2).
 
 
 ### General
-En el ultimo escenario se evidencia que los dos consumidores que han sido creado, aunque estan suscritos a topics de interes distintos estos reciben los mensajes que sean enviados al grupos general como se solicita en el enunciado del parcial. Para validar el correcto funcionamiento se debe enviar un mensaje de parte del productor con destino "general" y verificar que efectivamente los dos consumidores han recibido el mensaje.
+En el último escenario, se evidencia que los dos consumidores creados, reciben los mensajes enviados al grupo "General", aunque estén suscritos a topics distintos. Para validar el correcto funcionamiento, se debe enviar un mensaje de parte del productor con destino "General" y verificar que efectivamente los dos consumidores han recibido el mensaje.
 
 <img src ="img/enviartodos.JPG"  >
 
-Se evidencia que el mensaje emitido por el productor tiene como destino el grupo "general".
+Se evidencia que el mensaje emitido por el productor tiene como destino el grupo "General".
 
 <img src ="img/recibirtodos1.JPG"  >
 
-En la imagen se evidencia que la maquina virtual correspondiente al consumidor uno(1) ha recibido correctamente el mensaje que ha enviado el productor.
+En la imagen se evidencia que la máquina virtual correspondiente al consumidor 1 ha recibido correctamente el mensaje que ha enviado el productor.
 
 <img src ="img/recibirtodos2.JPG"  >
 
-De igual forma se evidencia que el segundo consumidor aunque pertenece a un topic diferente, ha recibido correctamente el mensaje enviado al grupo general por parte del emisor.
+De igual forma para el segundo consumidor que recibe el mensaje proveniente del grupo "General".
 
 <img src ="img/colatodos.JPG"  >
 
-De igual forma se evidencia que han sido creadas dos colas correspondientes a los grupos de los consumidores, es decir la cola de mensajes para el grupo 01 y grupo 02. Es decir no se ha creado una cola de mensajes para el grupo general, si no que los mensajes de este grupo se almacenan en ambas colas de manera que los consumidores puedan acceder a esos mensajes.
-
+Han sido creadas dos colas correspondientes a los grupos de los 2 consumidores, es decir la cola de mensajes para: "Grupo-01" y "Grupo-02". Cabe aclarar que no se ha creado una cola de mensajes para el grupo General, sino que los mensajes de este grupo se almacenan en las colas correspondientes a los consumidores.
 
 
 ## Problemas
+
+1. En la ejecución del script productor en una máquina distinta a la que alberga el servidor rabbitmq (localhost), apareció el siguiente error:
+
+<img src ="img/errorlocalhost.PNG"  >
+
+Claramente, los logs de rabbitmq nos indican que el usuario "guest" (por defecto) solo puede conectarse vía localhost, no es permitido conectarse desde una máquina remota. Por lo tanto, la manera recomendada para solucionar este inconveniente es crear un usuario para cada uno de los agentes involucrados como lo vimos al inicio del documento: producer, consumer1 y consumer2. 
+
+Para la creación de un usuario ingresamos los siguientes comandos en el servidor: 
+
+`sudo rabbitmqctl add_user {username} {password}
+sudo rabbitmqctl set_permissions -p / {username} ".*" ".*" ".*"
+sudo service rabbitmq-server restart`
+Creamos el usuario, le otorgamos permisos y finalmente reiniciamos el servidor rabbitmq.
+
+Luego, en el script asociado al productor o consumidor se le pasan las credenciales de usuario para poder conectarse a rabbitmq:
+
+<img src ="img/credenciales.PNG"  >
+Está imagen corresponde al primer fragmento de código del productor, en el cúal se le pasan las credenciales de usuario a los parámetros de conexión del archivo python (.py). 
+
 
 
 ## Referencias
 
 -  RabbitMQ Topics : https://www.rabbitmq.com/tutorials/tutorial-five-python.html
+-  RabbitMQ Server Instalation : https://www.youtube.com/watch?v=eazz-Je4HAA
+-  Python Pika https://pika.readthedocs.io/en/stable/
+-  Authentication, Authorisation, Access Control https://www.rabbitmq.com/access-control.html
+- 
