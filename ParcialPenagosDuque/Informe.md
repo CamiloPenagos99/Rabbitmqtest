@@ -140,20 +140,20 @@ Han sido creadas dos colas correspondientes a los grupos de los 2 consumidores, 
 
 1. En la ejecución del script productor en una máquina distinta a la que alberga el servidor rabbitmq (localhost), apareció el siguiente error:
 
-<img src ="img/errorlocalhost.PNG"  >
+<img src ="img/errorlocalhost.png"  >
 
 Claramente, los logs de rabbitmq nos indican que el usuario "guest" (por defecto) solo puede conectarse vía localhost, no es permitido conectarse desde una máquina remota. Por lo tanto, la manera recomendada para solucionar este inconveniente es crear un usuario para cada uno de los agentes involucrados como lo vimos al inicio del documento: producer, consumer1 y consumer2. 
 
 Para la creación de un usuario ingresamos los siguientes comandos en el servidor: 
 
-`sudo rabbitmqctl add_user {username} {password}
-sudo rabbitmqctl set_permissions -p / {username} ".*" ".*" ".*"
-sudo service rabbitmq-server restart`
+`sudo rabbitmqctl add_user {username} {password}`
+`sudo rabbitmqctl set_permissions -p / {username} ".*" ".*" ".*"`
+`sudo service rabbitmq-server restart`
 Creamos el usuario, le otorgamos permisos y finalmente reiniciamos el servidor rabbitmq.
 
 Luego, en el script asociado al productor o consumidor se le pasan las credenciales de usuario para poder conectarse a rabbitmq:
 
-<img src ="img/credenciales.PNG"  >
+<img src ="img/credenciales.png"  >
 Está imagen corresponde al primer fragmento de código del productor, en el cúal se le pasan las credenciales de usuario a los parámetros de conexión del archivo python (.py). 
 
 
