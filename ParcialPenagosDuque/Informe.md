@@ -147,15 +147,35 @@ Claramente, los logs de rabbitmq nos indican que el usuario "guest" (por defecto
 Para la creación de un usuario ingresamos los siguientes comandos en el servidor: 
 
 `sudo rabbitmqctl add_user {username} {password}`
+Creamos un usuario 
+
 `sudo rabbitmqctl set_permissions -p / {username} ".*" ".*" ".*"`
+Cambiamos los permisos al usuario
+
 `sudo service rabbitmq-server restart`
-Creamos el usuario, le otorgamos permisos y finalmente reiniciamos el servidor rabbitmq.
+Finalmente, reiniciamos el servidor rabbitmq.
 
 Luego, en el script asociado al productor o consumidor se le pasan las credenciales de usuario para poder conectarse a rabbitmq:
 
 <img src ="img/credenciales.png"  >
-Está imagen corresponde al primer fragmento de código del productor, en el cúal se le pasan las credenciales de usuario a los parámetros de conexión del archivo python (.py). 
+Está imagen corresponde al primer fragmento de código del productor, en el cúal se le pasan las credenciales de usuario a los parámetros de conexión del script python (.py). 
 
+
+2. Durante la prueba de ejecución del script .py del productor, apareció el siguiente error:
+
+<img src ="img/errorpuerto.png"  >
+El error se encuentra en los parámetros de conexión. Al observar detenidamente esta línea, se determinó que el error era por el puerto de conexión dado que estaba el puerto http (15672) del servidor rabbitmq, usado para conectarse a la interfaz web del rabbitmq vía localhost. Así que, el puerto que permite la conexión con el servidor rabbitmq por parte del productor o consumidores es el 5672, que hace uso del protocolo AMQP para el intercambio de mensajes basado en colas. En la interfaz web de administración de rabbitmq podemos observar los puertos de escucha:
+
+<img src ="img/puertos.png"  >
+En la imagen vemos la asignación del puerto 5672 para el protocolo AMQP y el puerto 15672 para el protocolo HTTP.
+
+3. En la ejecución del script de alguno de los consumidores ocurrió lo siguiente:
+
+<img src ="img/errorversionpika.png"  >
+Este error está dentro de los parámetros del canal básico de consumo de mensajes. Al investigar en internet se encontró que dicho problema se basa en el orden de los parámetros entre versiones de pika. Así que se ha modificado el orden de los argumentos en el script de la siguiente manera: 
+
+`channel.basic_consume(callback, queue=queue_name, no_ack=True)`
+De este modo, se soluciona el error de orden de argumentos entre versiones de pika. 
 
 
 ## Referencias
@@ -164,4 +184,4 @@ Está imagen corresponde al primer fragmento de código del productor, en el cú
 -  RabbitMQ Server Instalation : https://www.youtube.com/watch?v=eazz-Je4HAA
 -  Python Pika https://pika.readthedocs.io/en/stable/
 -  Authentication, Authorisation, Access Control https://www.rabbitmq.com/access-control.html
-- 
+-  Pika Version https://stackoverflow.com/questions/50404273/python-tutorial-code-from-rabbitmq-failing-to-run
