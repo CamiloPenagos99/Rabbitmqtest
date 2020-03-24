@@ -161,8 +161,6 @@ Luego, en el script asociado al productor o consumidor se le pasan las credencia
 Está imagen corresponde al primer fragmento de código del productor, en el cúal se le pasan las credenciales de usuario a los parámetros de conexión del script python (.py). 
 
 
-
-
 2. Durante la prueba de ejecución del script .py del productor, apareció el siguiente error:
 
 <img src ="img/errorpuerto.png"  >
@@ -170,8 +168,6 @@ El error se encuentra en los parámetros de conexión. Al observar detenidamente
 
 <img src ="img/puertos.png"  >
 En la imagen vemos la asignación del puerto 5672 para el protocolo AMQP y el puerto 15672 para el protocolo HTTP.
-
-
 
 
 3. En la ejecución del script de alguno de los consumidores ocurrió lo siguiente:
